@@ -1,11 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
+import  { Navbar }  from './component/Navbar/Navbar';
+import { darkTheme } from './Theme/DarkTheme';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import  { Home }  from './component/Home/Home';
+
 
 function App() {
   return (
-    <div className="App">
-     <h1 className='text-blue-600'>code with hashini</h1>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline/>
+      <Navbar/>
+      <Home/>
+
+    </ThemeProvider>
+    
   );
 }
 
