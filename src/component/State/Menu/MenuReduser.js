@@ -1,4 +1,4 @@
-import { error } from 'yupp/util/logger';
+
 import * as actionTypes from './MenuActionType'
 
 const initialState = {

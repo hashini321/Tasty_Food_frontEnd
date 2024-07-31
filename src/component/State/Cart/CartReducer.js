@@ -1,6 +1,7 @@
+import { LOGOUT } from "../Authontication/ActionType";
 import * as actionTypes from "./CartActionType";
-import {LOGOUT} from "../Authontication/ActionType";
-import { error } from "yupp/util/logger";
+
+
 const initialState = {
     cart: null,
     cartItems: [],

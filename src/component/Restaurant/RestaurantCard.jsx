@@ -4,13 +4,14 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 
-const RestaurantCard = () => {
+const RestaurantCard = ({item}) => {
   return (
     <Card classname=" w-[18rem]">
         <div className={`${true?'cursor-pointer':"cursor-not-allowed"} relative`}>
 
             <img className='w-full h-[10rem] rounded-t-md object-cover'
-            src="https://cdn.pixabay.com/photo/2012/12/19/18/13/architecture-70920_960_720.jpg" alt=''/>
+            src={item.images[0]} 
+            alt=''/>
 
             <Chip
             size="small"
