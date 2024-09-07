@@ -37,6 +37,7 @@ export const authReduser=(state=initialState,action)=>{
                 ...state, 
                 isLoading:false,
                 user: action.payload,
+                favorites:action.payload.favorites
             } ;  
 
         
@@ -45,9 +46,9 @@ export const authReduser=(state=initialState,action)=>{
                 ...state, 
                 isLoading:false,
                 error:null,
-                favorite:isPresentInFavorites(state.favorites,action.payload)
+                favorites:isPresentInFavorites(state.favorites,action.payload)
                 ? state.favorites.filter((item)=>item.id!==action.payload.id)
-                :[action.payload,...state.favorites]
+                :[action.payload, ...state.favorites],
             };
             case LOGOUT:
                 return initialState;

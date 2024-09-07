@@ -63,7 +63,7 @@ export const getRestaurantById = (reqData) => {
       try {
           const response= await api.get(`/api/restaurants/${reqData.restaurantId}`,{
               headers:{
-                  Authorization:`Bearer ${reqData.data}`,
+                  Authorization:`Bearer ${reqData.jwt}`,
               },
           });
           dispatch({type:GET_RESTAURANTS_BY_ID_SUCCESS,payload:response.data});
@@ -271,7 +271,7 @@ export const getRestaurantsCategory = ({jwt, restaurantId}) => {
     return async(dispatch) =>{
         dispatch({type:GET_RESTAURANTS_CATEGORY_REQUEST})
         try {
-            const res= await api.get(`api/category/restaurant/${restaurantId}`, {
+            const res= await api.get(`/api/category/restaurant/${restaurantId}`, {
                 headers:{
                     Authorization:`Bearer ${jwt}`,
                 },
