@@ -1,6 +1,7 @@
 import { ADD_ITEM_TO_CART_FAILURE, ADD_ITEM_TO_CART_REQUEST, ADD_ITEM_TO_CART_SUCCESS, CLEARE_CART_FAILURE, CLEARE_CART_REQUEST, CLEARE_CART_SUCCESS, FIND_CART_FAILURE, FIND_CART_REQUEST, FIND_CART_SUCCESS, GET_ALL_CART_ITEMS_FAILURE, GET_ALL_CART_ITEMS_REQUEST, GET_ALL_CART_ITEMS_SUCCESS, REMOVE_CARTITEM_FAILURE, REMOVE_CARTITEM_REQUEST, REMOVE_CARTITEM_SUCCESS, UPDATE_CARTITEM_FAILURE, UPDATE_CARTITEM_REQUEST, UPDATE_CARTITEM_SUCCESS } from "./CartActionType"
+import { api } from '../../Config/api';
 
-export const findcart = (token) => {
+export const findCart = (token) => {
     return async (dispatch) => {
         dispatch({type:FIND_CART_REQUEST});
         try {
@@ -9,8 +10,10 @@ export const findcart = (token) => {
                     Authorization: `Bearer ${token}`,
                 },
             });
+            console.log("find cart ", response.data)
             dispatch({type:FIND_CART_SUCCESS, payload:response.data})
         } catch (error){
+            console.log("catch error ",error)
             dispatch({type:FIND_CART_FAILURE,payload:error})
 
         }
@@ -26,8 +29,10 @@ export const getAllCartItem = (reqData) => {
                     Authorization: `Bearer ${reqData.token}`,
                 },
             });
+            console.log("get all cart item ", response.data)
             dispatch({type:GET_ALL_CART_ITEMS_SUCCESS, payload:response.data})
         } catch (error){
+            console.log("catch error ",error)
             dispatch({type:GET_ALL_CART_ITEMS_FAILURE,payload:error})
 
         }
@@ -76,7 +81,7 @@ export const removeCartItem = ({cartItemId, jwt}) => {
     return async (dispatch) => {
         dispatch({type:REMOVE_CARTITEM_REQUEST});
         try {
-            const {data} = await api.delete(`/api/cart-item/${cartItemId}/remove`,reqData.data,{
+            const {data} = await api.delete(`/api/cart-item/${cartItemId}/remove`,{
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },

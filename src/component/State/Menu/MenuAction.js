@@ -7,7 +7,7 @@ export const createMenuItem = ({menu,jwt}) => {
     try{
         const {data} = await api.post("api/admin/food", menu,
             {
-                header:{
+                headers:{
                     Authorization: `Bearer ${jwt}`,
                 }
             }
@@ -27,10 +27,10 @@ export const getMenuItemsByRestaurantId = (reqData) => {
       dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_REQUEST});
       try{
           const {data} = await api.get(`/api/food/restaurant/${reqData.restaurantId}?vegetarian=${reqData.vegetarian}
-            &nonveg=${reqData.nonveg} &seasonal=${reqData.seasonal}&food_category=${reqData.foodCategory}`,
+           &nonveg=${reqData.nonveg} &seasonal=${reqData.seasonal}  &food_category=${reqData.foodCategory}`,
               {
-                  header:{
-                      Authorization: `Bearer ${jwt}`,
+                  headers:{
+                      Authorization: `Bearer ${reqData.jwt}`,
                   }
               }
           );
@@ -50,7 +50,7 @@ export const searchMenuItem = ({keyword,jwt}) => {
       try{
           const {data} = await api.get(`api/food/search?name=${keyword}`,
               {
-                  header:{
+                  headers:{
                       Authorization: `Bearer ${jwt}`,
                   }
               }
@@ -92,7 +92,7 @@ export const updateMenuItemsAvailability = ({foodId,jwt}) => {
       try{
           const {data} = await api.put(`api/admin/food/${foodId}`, {},
               {
-                  header:{
+                  headers:{
                       Authorization: `Bearer ${jwt}`,
                   }
               }
@@ -113,7 +113,7 @@ export const deleteFoodAction = ({foodId,jwt}) => {
       try{
           const {data} = await api.delete(`/api/admin/food/${foodId}`,
               {
-                  header:{
+                  headers:{
                       Authorization: `Bearer ${jwt}`,
                   }
               }
