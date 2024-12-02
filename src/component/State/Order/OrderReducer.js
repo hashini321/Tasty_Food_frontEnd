@@ -7,7 +7,7 @@ const initialState = {
     
 };
 
-export const orderReducer = (state = initialState, {type: payload}) => {
+export const orderReducer = (state = initialState, {type, payload}) => {
     switch (type){
         case GET_USERS_ORDERS_REQUEST:
             return { 

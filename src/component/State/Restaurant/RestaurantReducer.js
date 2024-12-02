@@ -1,4 +1,4 @@
-import { error } from "yupp/util/logger"
+
 import * as actionTypes from "./RestaurantActionTypes"
 
 const initialState = {
@@ -19,7 +19,6 @@ const restaurantReducer = (state = initialState, action) => {
         case actionTypes.DELETE_EVENTS_REQUEST:
         case actionTypes.UPDATE_RESTAURANTS_REQUEST:
         case actionTypes.GET_RESTAURANTS_BY_ID_REQUEST:
-        case actionTypes.CREATE_CATEGORY_REQUEST:
         case actionTypes.CREATE_CATEGORY_REQUEST:
             return{
                 ...state,

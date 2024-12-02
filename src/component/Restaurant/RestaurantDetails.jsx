@@ -1,16 +1,14 @@
 import { Divider, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import MenuCard from './MenuCard';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRestaurantById, getRestaurantsCategory } from '../State/Restaurant/RestaurantAction';
+import { getMenuItemsByRestaurantId } from '../State/Menu/MenuAction';
 
-const categories=[
-    "Pizza",
-    "biryyani",
-    "burger",
-    "chiken",
-    "rice"
-]
+
 
 const foodTypes =[
     {label : "All", value:"all"},
@@ -19,14 +17,49 @@ const foodTypes =[
     {label : "Seasonal", value:"seasonal"}
 ];
 
-const menu = [1,1,1,1,1,1,1]
+// const menu = [1,1,1,1,1,1,1]
 
 const RestaurantDetails = () => {
 
-    const [foodType,setFoodType]= useState("all")
-    const handleFlter=(e)=>{
-        console.log(e.target.value,e.target.name)
+    const [foodType, setFoodType] = useState("all");
+    const navigate = useNavigate()
+    const dispatch =useDispatch()
+    const jwt = localStorage.getItem("jwt")
+    const {auth, restaurant, menu} = useSelector(store=>store);
+    const[selectedCategory,setSelectedCategory]= useState("");
+
+    const handleFilter=(e)=>{
+        setFoodType(e.target.value)
+        console.log(e.target.value, e.target.name)
     }
+    const handleFilterCategory=(e,value)=>{
+        setSelectedCategory(value)
+        console.log(e.target.value,e.target.name,value)
+    }
+
+    const {id,city} = useParams();
+
+    console.log("restaurant", restaurant)
+
+    useEffect(()=>{
+        dispatch(getRestaurantById({restaurantId:id,jwt}))
+        dispatch(getRestaurantsCategory({jwt,restaurantId:id}))
+        
+       
+    },[dispatch, jwt, id]);
+
+    useEffect(()=>{
+        dispatch(getMenuItemsByRestaurantId({
+            jwt,
+            restaurantId:id,
+            vegetarian: foodType==="vegetarian",
+            nonveg: foodType==="non_vegetarian",
+            seasonal: foodType==="seasonal",
+            foodCategory:selectedCategory
+        }))    
+    },[selectedCategory,foodType])
+
+    
 
   return (
     <div className='px-5 lg:px-20'>
@@ -40,13 +73,13 @@ const RestaurantDetails = () => {
                     <Grid item xs={12}>
 
                         <img className='w-full h-[40vh] object-cover'
-                        src='https://cdn.pixabay.com/photo/2012/12/19/18/13/architecture-70920_960_720.jpg' alt=''/>
+                        src={restaurant.restaurant?.images[0]}alt=''/>
 
                     </Grid>
                     <Grid item xs={12} lg={6}>
 
                         <img className='w-full h-[40vh] object-cover'
-                        src='https://cdn.pixabay.com/photo/2016/11/18/14/05/brick-wall-1834784_1280.jpg' alt=''/>
+                        src={restaurant.restaurant?.images[1]} alt=''/>
 
                     </Grid>
                     <Grid item xs={12} lg={6}>
@@ -60,14 +93,11 @@ const RestaurantDetails = () => {
                 
             </div>
             <div className='pt-3 pb-5'>
-                <h1 className='text-4xl font-semibold'> Indian Fast Food </h1>
+                <h1 className='text-4xl font-semibold'> {restaurant.restaurant?.name} </h1>
                 <p className='text-gray-500 mt-1'>
                     
                     
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                    Nam nihil deseunt eligendi animi, laudantium nostrum, quia, aliquam 
-                    mariores blanditiis mollitia aunt dolorum numquam totam. Sinit
-                    aspernatur culp officia numquam dignissimos!
+                   {restaurant.restaurant?.description}
                   
                   
                 </p>
@@ -102,7 +132,10 @@ const RestaurantDetails = () => {
 
                             <FormControl className='py-10 space-y-5' 
                             component={"fieldset"}>
-                                <RadioGroup onChange={handleFlter} name='food_type' value={foodType}>
+                                <RadioGroup onChange={handleFilter} 
+                                name='foodType' 
+                                value={foodType}
+                                >
 
                                 {foodTypes.map((item)=>(
                                     <FormControlLabel
@@ -123,14 +156,17 @@ const RestaurantDetails = () => {
 
                             <FormControl className='py-10 space-y-5' 
                             component={"fieldset"}>
-                                <RadioGroup onChange={handleFlter} name='category' value={foodType}>
+                                <RadioGroup onChange={handleFilterCategory}
+                                 name='foodCategory' 
+                                  value={selectedCategory}
+                                >
 
-                                {categories.map((item)=>(
+                                {restaurant.categories.map((item)=>(
                                     <FormControlLabel
-                                    key={item}
-                                    value={item} 
+                                    key={item.id}
+                                    value={item.name} 
                                     control={<Radio />} 
-                                    label={item} />
+                                    label={item.name} />
                                 ))}
 
                                 </RadioGroup>
@@ -141,7 +177,7 @@ const RestaurantDetails = () => {
                     </div>
                 </div>
                 <div className='space-y-5 lg:w-[80%] lg:pl-10'>
-                    {menu.map((item)=><MenuCard/>)}
+                    {menu.menuItems.map((item)=><MenuCard item={item}/>)}
                 </div>
 
             </section>

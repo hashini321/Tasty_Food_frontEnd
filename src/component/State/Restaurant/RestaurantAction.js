@@ -47,7 +47,7 @@ export const getAllRestaurantsAction = (token) => {
                 Authorization:`Bearer ${token}`,
             },
         });
-        dispatch({type:GET_ALL_RESTAURANTS_SUCCESS});
+        dispatch({type:GET_ALL_RESTAURANTS_SUCCESS, payload: data});
         console.log("all restaurant ", data);
     } catch (error) {
         console.log("catch error",error)
@@ -63,11 +63,11 @@ export const getRestaurantById = (reqData) => {
       try {
           const response= await api.get(`/api/restaurants/${reqData.restaurantId}`,{
               headers:{
-                  Authorization:`Bearer ${reqData.data}`,
+                  Authorization:`Bearer ${reqData.jwt}`,
               },
           });
           dispatch({type:GET_RESTAURANTS_BY_ID_SUCCESS,payload:response.data});
-          console.log("all restaurant ", data);
+          console.log("all restaurant ", response.data);
       } catch (error) {
           console.log("catch error",error)
           dispatch({type:GET_RESTAURANTS_BY_ID_FAITURE,payload:error})
@@ -85,8 +85,8 @@ return async(dispatch) =>{
                 Authorization:`Bearer ${jwt}`,
             },
         });
-        dispatch({type:GET_RESTAURANTS_BY_USER_ID_SUCCESS,payload:data});
-        console.log("all restaurant by user id ", data);
+        dispatch({type:GET_RESTAURANTS_BY_USER_ID_SUCCESS,payload:response.data});
+        console.log("all restaurant by user id ", response.data);
     } catch (error) {
         console.log("catch error",error)
         dispatch({type:GET_RESTAURANTS_BY_ID_FAITURE,payload:error.message})
@@ -271,7 +271,7 @@ export const getRestaurantsCategory = ({jwt, restaurantId}) => {
     return async(dispatch) =>{
         dispatch({type:GET_RESTAURANTS_CATEGORY_REQUEST})
         try {
-            const res= await api.get(`api/category/restaurant/${restaurantId}`, {
+            const res= await api.get(`/api/category/restaurant/${restaurantId}`, {
                 headers:{
                     Authorization:`Bearer ${jwt}`,
                 },
