@@ -11,6 +11,7 @@ const MultiItemCarousel = () => {
       infinite: true,
       speed: 500,
       slidesToShow: 5,
+     // slidesToShow: window.innerWidth >= 800 ? 5 : 2, // Adjust based on viewport width
       slidesToScroll: 1,
       autoplay:true,
       autoplaySpeed:2000,
